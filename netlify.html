@@ -1,0 +1,113 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js"></script>
+	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/responsive/2.1.1/js/dataTables.responsive.min.js"></script>
+	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/responsive/2.1.1/js/responsive.bootstrap.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css"	type="text/css" />	
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"	type="text/css" />
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css"	type="text/css" />
+	<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap.min.css"	type="text/css" />	
+	<style>
+		input[type=text] {
+			width: 130px;
+			box-sizing: border-box;
+			border: 2px solid #ccc;
+			border-radius: 4px;
+			font-size: 16px;
+			background-color: white;
+			background-image: url('searchicon.png');
+			background-position: 10px 10px; 
+			background-repeat: no-repeat;
+			padding: 12px 20px 12px 40px;
+			-webkit-transition: width 0.4s ease-in-out;
+			transition: width 0.4s ease-in-out;
+			font-size: 18px;
+		}
+
+		input[type=text]:focus {
+			width: 100%;
+		}	
+	</style>
+</head>
+<body id="content" style="font-family: Trebuchet MS, Tahoma, Verdana, Arial, sans-serif; padding: 10px;">
+	<div class="container" align="center">	
+		<h1>BAPS Yajman List&nbsp;
+		<button type="button" class="btn btn-warning glyphicon glyphicon-refresh" onclick="location.reload();"></button>
+		</h1>
+		<br/>
+		<input id="search" placeholder="Search..." type="text"/>
+		<br/>
+		<br/>
+	</div>
+	<div class="panel panel-default" style="padding: 5px;">
+		<div class="panel-heading" onclick="toggleDisplay('maleYajmanContainer');">Purush Yajmans</div>
+		<div id="maleYajmanContainer">
+			<table id="maleYajmanList" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%"></table>
+		</div>
+	</div>	
+	<hr size="25px">
+	<div class="panel panel-default" style="padding: 5px;">
+		<div class="panel-heading" onclick="toggleDisplay('mahilaYajmanContainer');">Mahila Yajmans</div>
+		<div id="mahilaYajmanContainer">
+			<table id="mahilaYajmanList" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+		</div>
+	</div>
+</body>
+<script>
+var maleDataTable, mahilaDataTable;
+$(document).ready(function(){
+	loadYajmanList("#maleYajmanList", "https://spreadsheets.google.com/feeds/list/1tFzWIAnM32yuIIthr2vqTozNKL_8nGcMom8FINWPPak/od6/public/values?alt=json");
+	loadYajmanList("#mahilaYajmanList", "https://spreadsheets.google.com/feeds/list/1iYn1kU_V3Ggiv3n-Jda0PipCbFQFC-CU316ELAl_PvI/od6/public/values?alt=json");
+	$("#content").append('<p align="center" style="background: #272727; color:white; padding: 30px;"><img style="max-width:100%; width: auto;" src="https://events.na.baps.org/ne2017/wp-content/uploads/2017/03/footer-1024x157.png" alt="BAPS Swaminarayan Sanstha" width="375"><br>BAPS Swaminarayan Sanstha<sup>®</sup><br><a href="http://www.baps.org/dallas" target="_blank">www.baps.org/dallas</a> | <a href="mailto:info.dallas@usa.baps.org" target="_top">info.dallas@usa.baps.org</a></p>');
+	$("#search").keyup(function() {
+		maleDataTable.search($("#search").val()).draw();
+		mahilaDataTable.search($("#search").val()).draw();
+	});	
+	$("#search").focus();
+});
+
+function loadYajmanList(tableId, url){
+	$.get(url, function(data, status){
+		var entry = data.feed.entry;
+		var tableHtml = [];
+		$(entry).each(function(){
+			//tableHtml +="<tr><td>"+this.gsx$first.$t+"</td><td>"+this.gsx$last.$t+"</td><td>"+this.gsx$seat.$t+"</td><td>"+this.gsx$city.$t+"</td><tr>";
+			tableHtml.push([this.gsx$name.$t,this.gsx$seat.$t,this.gsx$city.$t]);
+		});
+		console.log(tableHtml);
+		if(tableId.indexOf("male") > -1){
+			maleDataTable =	$(tableId).DataTable({
+				data: tableHtml,
+				columns: [
+					{ title: "Name" },
+					{ title: "Seat" },
+					{ title: "City" }
+				]
+			});
+		} else {
+			mahilaDataTable =	$(tableId).DataTable({
+				data: tableHtml,
+				columns: [
+					{ title: "Name" },
+					{ title: "Seat" },
+					{ title: "City" }
+				]
+			});
+		}
+	});
+}
+function toggleDisplay(element){
+	if($("#"+element).is(":visible")){
+		$("#"+element).hide();	
+	} else {
+		$("#"+element).show();
+	}
+}
+</script>
+</html>
