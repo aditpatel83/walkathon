@@ -43,7 +43,7 @@
 		</h1>
 		<br/>
 		<input id="search" placeholder="Search..." type="text"/>
-		video
+		video1
 		<video id="video"  width="100%" style="padding:10px; position:absolute;">Loading...</video>		
 		<br/>
 		<br/>
@@ -65,8 +65,8 @@
 <script>
 var maleDataTable, mahilaDataTable;
 $(document).ready(function(){
-      const video = (HTMLVideoElement) document.getElementById('video');
-      var scanner = new QrScanner(video, result => scanEmployee(result), {
+      //const video = (HTMLVideoElement) document.getElementById('video');
+      var scanner = new QrScanner($('#video').get(0), result => scanEmployee(result), {
        onDecodeError: error => {
            console.log(error);
        },
