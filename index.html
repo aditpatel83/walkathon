@@ -38,11 +38,12 @@
 </head>
 <body id="content" style="font-family: Trebuchet MS, Tahoma, Verdana, Arial, sans-serif; padding: 10px;">	
 	<div class="container" align="center">	
-		<h1>BAPS Yajman List&nbsp;
+		<h1>Walkathon Lookup&nbsp;
 		<button type="button" class="btn btn-warning glyphicon glyphicon-refresh" onclick="location.reload();"></button>
 		</h1>
 		<br/>
 		<input id="search" placeholder="Search..." type="text"/>
+		<button type="button" class="btn btn-warning glyphicon glyphicon-qrcode" onclick="startScan();"></button>
 		video
 		<video id="video"  width="100%" style="padding:10px; position:absolute;">Loading...</video>		
 		<br/>
@@ -63,33 +64,33 @@
 	</div>
 </body>
 <script>
-var maleDataTable, mahilaDataTable;
+var maleDataTable, mahilaDataTable, scanner;
 $(document).ready(function(){
-      //const video = (HTMLVideoElement) document.getElementById('video');
-      var scanner = new QrScanner($('#video').get(0), result => scanEmployee(result), {
-       onDecodeError: error => {
-           console.log(error);
-       },
-       highlightScanRegion: true,
-       highlightCodeOutline: true
-      });      
-      scanner.setInversionMode('both');
-      scanner.start();
-
-	
 	loadYajmanList("#maleYajmanList", "https://spreadsheets.google.com/feeds/list/1tFzWIAnM32yuIIthr2vqTozNKL_8nGcMom8FINWPPak/od6/public/values?alt=json");
 	loadYajmanList("#mahilaYajmanList", "https://spreadsheets.google.com/feeds/list/1iYn1kU_V3Ggiv3n-Jda0PipCbFQFC-CU316ELAl_PvI/od6/public/values?alt=json");
-	$("#content").append('<p align="center" style="background: #272727; color:white; padding: 30px;"><img style="max-width:100%; width: auto;" src="https://events.na.baps.org/ne2017/wp-content/uploads/2017/03/footer-1024x157.png" alt="BAPS Swaminarayan Sanstha" width="375"><br>BAPS Swaminarayan Sanstha<sup>®</sup><br><a href="http://www.baps.org/dallas" target="_blank">www.baps.org/dallas</a> | <a href="mailto:info.dallas@usa.baps.org" target="_top">info.dallas@usa.baps.org</a></p>');
+	//$("#content").append('<p align="center" style="background: #272727; color:white; padding: 30px;"><img style="max-width:100%; width: auto;" src="https://events.na.baps.org/ne2017/wp-content/uploads/2017/03/footer-1024x157.png" alt="BAPS Swaminarayan Sanstha" width="375"><br>BAPS Swaminarayan Sanstha<sup>®</sup><br><a href="http://www.baps.org/dallas" target="_blank">www.baps.org/dallas</a> | <a href="mailto:info.dallas@usa.baps.org" target="_top">info.dallas@usa.baps.org</a></p>');
 	$("#search").keyup(function() {
 		maleDataTable.search($("#search").val()).draw();
 		mahilaDataTable.search($("#search").val()).draw();
 	});	
 	$("#search").focus();
+        scanner = new QrScanner($('#video').get(0), result => scanEmployee(result), {
+         onDecodeError: error => {
+           console.log(error);
+         },
+         highlightScanRegion: true,
+         highlightCodeOutline: true
+        });      
+        scanner.setInversionMode('both');
 });
 
+function startScan(){
+	scanner.start();
+}
 function scanEmployee(result){
 	console.log(result)
 	alert(result.data);
+	scanner.stop();
 }
 function loadYajmanList(tableId, url){
 	$.get(url, function(data, status){
