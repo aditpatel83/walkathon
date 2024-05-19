@@ -65,7 +65,7 @@
 <script>
 var maleDataTable, mahilaDataTable;
 $(document).ready(function(){
-      const video = document.getElementById('video') as HTMLVideoElement;
+      const video = (HTMLVideoElement) document.getElementById('video');
       var scanner = new QrScanner(video, result => scanEmployee(result), {
        onDecodeError: error => {
            console.log(error);
