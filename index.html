@@ -43,7 +43,7 @@
 		</h1>
 		<br/>
 		<input id="search" placeholder="Search..." type="text"/>
-		video1
+		video
 		<video id="video"  width="100%" style="padding:10px; position:absolute;">Loading...</video>		
 		<br/>
 		<br/>
@@ -88,7 +88,8 @@ $(document).ready(function(){
 });
 
 function scanEmployee(result){
-	alert(result);
+	console.log(result)
+	alert(result.data);
 }
 function loadYajmanList(tableId, url){
 	$.get(url, function(data, status){
