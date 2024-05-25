@@ -37,77 +37,113 @@
 </head>
 <body id="content" style="font-family: Trebuchet MS, Tahoma, Verdana, Arial, sans-serif; padding: 10px;">	
 	<div class="container" align="center">	
-		<h1>Walkathon Lookup&nbsp;
-		<button type="button" class="btn btn-warning glyphicon glyphicon-refresh" onclick="location.reload();"></button>
-		</h1>
+		<h1>Walkathon Lookup</h1>
 		<br/>
 		<input id="search" placeholder="Search..." type="text"/>
 		<br/>
 		<br/>
 	</div>
 	<div class="panel panel-default" style="padding: 5px;">
-		<div class="panel-heading" onclick="toggleDisplay('maleYajmanContainer');">Purush Yajmans</div>
-		<div id="maleYajmanContainer">
-			<table id="maleYajmanList" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%"></table>
+		<div class="panel-heading">Registration Search Result</div>
+		<div id="registrationContainer">
+			<table id="registrationList" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%"></table>
 		</div>
 	</div>	
-	<hr size="25px">
-	<div class="panel panel-default" style="padding: 5px;">
-		<div class="panel-heading" onclick="toggleDisplay('mahilaYajmanContainer');">Mahila Yajmans</div>
-		<div id="mahilaYajmanContainer">
-			<table id="mahilaYajmanList" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
-		</div>
-	</div>
 </body>
 <script>
-var maleDataTable, mahilaDataTable;
+var registrationDataTable, registrationData;
 $(document).ready(function(){
-	loadYajmanList("#maleYajmanList", "https://spreadsheets.google.com/feeds/list/1tFzWIAnM32yuIIthr2vqTozNKL_8nGcMom8FINWPPak/od6/public/values?alt=json");
-	loadYajmanList("#mahilaYajmanList", "https://spreadsheets.google.com/feeds/list/1iYn1kU_V3Ggiv3n-Jda0PipCbFQFC-CU316ELAl_PvI/od6/public/values?alt=json");
-	//$("#content").append('<p align="center" style="background: #272727; color:white; padding: 30px;"><img style="max-width:100%; width: auto;" src="https://events.na.baps.org/ne2017/wp-content/uploads/2017/03/footer-1024x157.png" alt="BAPS Swaminarayan Sanstha" width="375"><br>BAPS Swaminarayan Sanstha<sup>®</sup><br><a href="http://www.baps.org/dallas" target="_blank">www.baps.org/dallas</a> | <a href="mailto:info.dallas@usa.baps.org" target="_top">info.dallas@usa.baps.org</a></p>');
+	loadRegistrationList("#registrationList");
 	$("#search").keyup(function() {
-		maleDataTable.search($("#search").val()).draw();
-		mahilaDataTable.search($("#search").val()).draw();
+		registrationDataTable.search($("#search").val()).draw();
 	});	
 	$("#search").focus();
 });
 
-function loadYajmanList(tableId, url){
-	$.get(url, function(data, status){
-		var entry = data.feed.entry;
+function loadRegistrationList(tableId){
 		var tableHtml = [];
-		$(entry).each(function(){
-			//tableHtml +="<tr><td>"+this.gsx$first.$t+"</td><td>"+this.gsx$last.$t+"</td><td>"+this.gsx$seat.$t+"</td><td>"+this.gsx$city.$t+"</td><tr>";
-			tableHtml.push([this.gsx$name.$t,this.gsx$seat.$t,this.gsx$city.$t]);
+		$.each(registrationData, function(index, element) {
+			tableHtml.push(element);
 		});
 		console.log(tableHtml);
-		if(tableId.indexOf("male") > -1){
-			maleDataTable =	$(tableId).DataTable({
-				data: tableHtml,
-				columns: [
-					{ title: "Name" },
-					{ title: "Seat" },
-					{ title: "City" }
-				]
-			});
-		} else {
-			mahilaDataTable =	$(tableId).DataTable({
-				data: tableHtml,
-				columns: [
-					{ title: "Name" },
-					{ title: "Seat" },
-					{ title: "City" }
-				]
-			});
-		}
+		registrationDataTable =	$(tableId).DataTable({
+			data: tableHtml,
+			columns: [
+				{ title: "Bag Id" },
+				{ title: "Registration Id" },
+				{ title: "First Name" },
+				{ title: "Last Name" },
+				{ title: "Address" },
+				{ title: "City" },
+				{ title: "State" },
+				{ title: "Phone" },
+				{ title: "Email" },
+				{ title: "TShirt Size" }
+			]
+		});
 	});
 }
-function toggleDisplay(element){
-	if($("#"+element).is(":visible")){
-		$("#"+element).hide();	
-	} else {
-		$("#"+element).show();
-	}
-}
+registrationData= [
+    [
+      "Bag Id",
+      "Registrant Id",
+      "Registrant First Name",
+      "Registrant Last Name",
+      "Address",
+      "City",
+      "State",
+      "Phone",
+      "Email",
+      "TShirt"
+    ],
+    [
+      "1",
+      "287074",
+      "Adit",
+      "Patel",
+      "1287 Ocean Breeze Dr",
+      "Flower Mound",
+      "TX",
+      "6785512025",
+      "patel.adit@gmail.com",
+      "XL"
+    ],
+    [
+      "1",
+      "287074",
+      "Tilak",
+      "Patel",
+      "1287 Ocean Breeze Dr",
+      "Flower Mound",
+      "TX",
+      "6785512025",
+      "patel.adit@gmail.com",
+      "YL"
+    ],
+    [
+      "1",
+      "287074",
+      "Yogi",
+      "Patel",
+      "1287 Ocean Breeze Dr",
+      "Flower Mound",
+      "TX",
+      "6785512025",
+      "patel.adit@gmail.com",
+      "YS"
+    ],
+    [
+      "2",
+      "287074",
+      "Jalpa",
+      "Patel",
+      "1287 Ocean Breeze Dr",
+      "Flower Mound",
+      "TX",
+      "4692622758",
+      "patel.adit@gmail.com",
+      "L"
+    ]
+  ];
 </script>
 </html>
