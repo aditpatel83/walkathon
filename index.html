@@ -61,26 +61,25 @@ $(document).ready(function(){
 });
 
 function loadRegistrationList(tableId){
-		var tableHtml = [];
-		$.each(registrationData, function(index, element) {
-			tableHtml.push(element);
-		});
-		console.log(tableHtml);
-		registrationDataTable =	$(tableId).DataTable({
-			data: tableHtml,
-			columns: [
-				{ title: "Bag Id" },
-				{ title: "Registration Id" },
-				{ title: "First Name" },
-				{ title: "Last Name" },
-				{ title: "Address" },
-				{ title: "City" },
-				{ title: "State" },
-				{ title: "Phone" },
-				{ title: "Email" },
-				{ title: "TShirt Size" }
-			]
-		});
+	var tableHtml = [];
+	$.each(registrationData, function(index, element) {
+		tableHtml.push(element);
+	});
+	console.log(tableHtml);
+	registrationDataTable =	$(tableId).DataTable({
+		data: tableHtml,
+		columns: [
+			{ title: "Bag Id" },
+			{ title: "Registration Id" },
+			{ title: "First Name" },
+			{ title: "Last Name" },
+			{ title: "Address" },
+			{ title: "City" },
+			{ title: "State" },
+			{ title: "Phone" },
+			{ title: "Email" },
+			{ title: "TShirt Size" }
+		]
 	});
 }
 registrationData= [
