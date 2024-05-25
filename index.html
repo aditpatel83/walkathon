@@ -9,7 +9,6 @@
 	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js"></script>
 	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/responsive/2.1.1/js/dataTables.responsive.min.js"></script>
 	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/responsive/2.1.1/js/responsive.bootstrap.min.js"></script>
-	<script src="qr-scanner.umd.min.js"></script>
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css"	type="text/css" />	
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"	type="text/css" />
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css"	type="text/css" />
@@ -43,9 +42,6 @@
 		</h1>
 		<br/>
 		<input id="search" placeholder="Search..." type="text"/>
-		<button type="button" class="btn btn-warning glyphicon glyphicon-qrcode" onclick="startScan();"></button>
-		video
-		<video id="video"  width="100%" style="padding:10px; position:absolute;">Loading...</video>		
 		<br/>
 		<br/>
 	</div>
@@ -64,7 +60,7 @@
 	</div>
 </body>
 <script>
-var maleDataTable, mahilaDataTable, scanner;
+var maleDataTable, mahilaDataTable;
 $(document).ready(function(){
 	loadYajmanList("#maleYajmanList", "https://spreadsheets.google.com/feeds/list/1tFzWIAnM32yuIIthr2vqTozNKL_8nGcMom8FINWPPak/od6/public/values?alt=json");
 	loadYajmanList("#mahilaYajmanList", "https://spreadsheets.google.com/feeds/list/1iYn1kU_V3Ggiv3n-Jda0PipCbFQFC-CU316ELAl_PvI/od6/public/values?alt=json");
@@ -74,24 +70,8 @@ $(document).ready(function(){
 		mahilaDataTable.search($("#search").val()).draw();
 	});	
 	$("#search").focus();
-        scanner = new QrScanner($('#video').get(0), result => scanEmployee(result), {
-         onDecodeError: error => {
-           console.log(error);
-         },
-         highlightScanRegion: true,
-         highlightCodeOutline: true
-        });      
-        scanner.setInversionMode('both');
 });
 
-function startScan(){
-	scanner.start();
-}
-function scanEmployee(result){
-	console.log(result)
-	alert(result.data);
-	scanner.stop();
-}
 function loadYajmanList(tableId, url){
 	$.get(url, function(data, status){
 		var entry = data.feed.entry;
