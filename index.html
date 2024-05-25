@@ -33,6 +33,9 @@
 		input[type=text]:focus {
 			width: 100%;
 		}	
+		.registrationList_filter { 
+			display: none; 
+		}
 	</style>
 </head>
 <body id="content" style="font-family: Trebuchet MS, Tahoma, Verdana, Arial, sans-serif; padding: 10px;">	
@@ -54,8 +57,14 @@
 var registrationDataTable, registrationData;
 $(document).ready(function(){
 	loadRegistrationList("#registrationList");
+	$("#registrationContainer").hide();
 	$("#search").keyup(function() {
-		registrationDataTable.search($("#search").val()).draw();
+		if($("#search").val().length > 4){
+			$("#registrationContainer").show();
+			registrationDataTable.search($("#search").val()).draw();
+		} else {
+			$("#registrationContainer").hide();
+		}
 	});	
 	$("#search").focus();
 });
