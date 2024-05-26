@@ -40,9 +40,9 @@
 </head>
 <body id="content" style="font-family: Trebuchet MS, Tahoma, Verdana, Arial, sans-serif; padding: 10px;">	
 	<div class="container" align="center">	
-		<h1>Walkathon Lookup</h1>
+		<h1>BAPS Dallas Walkathon 2024 - Lookup</h1>
 		<br/>
-		<input id="search" placeholder="Search by phone, email or address" type="text"/>
+		<input id="search" placeholder="Search by Phone, Email or Address" type="text"/>
 		<br/>
 		<br/>
 	</div>
@@ -59,7 +59,7 @@ $(document).ready(function(){
 	loadRegistrationList("#registrationList");
 	$("#registrationContainer").hide();
 	$("#search").keyup(function() {
-		if($("#search").val().length > 4){
+		if($("#search").val().length >= 3){
 			$("#registrationContainer").show();
 			registrationDataTable.search($("#search").val()).draw();
 			$("#registrationList_filter").hide();
@@ -84,7 +84,44 @@ function loadRegistrationList(tableId){
 			{ title: "Phone" },
 			{ title: "Email" },
 			{ title: "Registration Id" },
-		]
+		],
+    columnDefs: [
+            {
+              //hide the state column
+                "targets": 6, 
+                "visible": false
+            },
+            {
+                "targets": 4,
+                "render": function(data, type, row) {
+                  // display the first 10 digits of the email
+                    if (type === 'display' && data.length > 10) {
+                        return data.substring(0, 10) + '...';
+                    }
+                    return data;
+                }
+            },
+            {
+                "targets": 7,
+                "render": function(data, type, row) {
+                    if (type === 'display') {
+                        // mask the last 4 digits of the mobile number
+                        return data.slice(0, -4).replace(/./g, '*') + data.slice(-4);
+                    }
+                    return data;
+                }
+            },
+            {
+                "targets": 8,
+                "render": function(data, type, row) {
+                  // display the first 10 digits of the email
+                    if (type === 'display' && data.length > 10) {
+                        return data.substring(0, 10) + '...';
+                    }
+                    return data;
+                }
+            }
+        ]
 	});
 }
 registrationData=[
