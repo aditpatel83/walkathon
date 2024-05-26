@@ -45,7 +45,12 @@
 		<input id="search" placeholder="Search by Phone, Email or Address" type="text"/>
 		<br/>
 		<br/>
+    <input type="text" id="bagIdSearch" placeholder="Search by Bag ID">
+    <br/>
+    <br/>
+    </div>
 	</div>
+  
 	<div class="panel panel-default" style="padding: 5px;">
 		<div class="panel-heading">Registration Search Result</div>
 		<div id="registrationContainer">
@@ -68,6 +73,14 @@ $(document).ready(function(){
 		}
 	});	
 	$("#search").focus();
+  $('#bagIdSearch').on('keyup change', function() {
+    $("#registrationContainer").show();
+    registrationDataTable
+            .column(0) 
+            .search(this.value)
+            .draw();
+    $("#registrationList_filter").hide();
+    });
 });
 
 function loadRegistrationList(tableId){
