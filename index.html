@@ -71,6 +71,7 @@ $(document).ready(function(){
 	$("#registrationContainer").hide();
 	$("#search").keyup(function() {
 		if($("#search").val().length >= 3){
+      $("#bagIdSearch").val(''); // Clear the other search box
 			$("#registrationContainer").show();
 			registrationDataTable.search($("#search").val()).draw();
 			$("#registrationList_filter").hide();
@@ -80,12 +81,17 @@ $(document).ready(function(){
 	});	
 	$("#search").focus();
   $('#bagIdSearch').on('keyup change', function() {
-    $("#registrationContainer").show();
-    registrationDataTable
-            .column(0) 
-            .search(this.value)
-            .draw();
-    $("#registrationList_filter").hide();
+    if($("#bagIdSearch").val().length >= 1) {
+			$("#search").val(''); // Clear the other search box
+			$("#registrationContainer").show();
+			registrationDataTable
+				.column(0)
+				.search(this.value)
+				.draw();
+			$("#registrationList_filter").hide();
+		} else {
+			$("#registrationContainer").hide();
+		}
     });
 });
 
